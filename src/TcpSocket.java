@@ -120,7 +120,7 @@ public class TcpSocket {
     
     public void send(String message){
         synchronized(this.message){
-            this.message.add(message);;
+            this.message.add(message+"\r\n");;
         }
     }
     
