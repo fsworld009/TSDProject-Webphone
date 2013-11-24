@@ -145,17 +145,20 @@ public class TcpSocket {
     private class SocketSendThread extends Thread{
         public void run(){
             try {
+                writer.flush();
                 while(threadRunning){
                     synchronized(message){
-                        if(!message.isEmpty()){
+                        while(!message.isEmpty()){
                             String sendMsg = message.poll();
                             writer.write(sendMsg);
                             System.out.println("TcpSocket:Send "+sendMsg);
-                            writer.flush();
+                            
                         }
+                        writer.flush();
                     }
+                    Thread.sleep(5);
                 }
-                Thread.sleep(5);
+
             } catch (InterruptedException ex) {
                 Logger.getLogger(TcpSocket.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -173,8 +176,9 @@ public class TcpSocket {
                     if(line != null){
                         eventListener.onReceive(line);
                     }
+                    Thread.sleep(5);
                 }
-                Thread.sleep(5);
+                
             } catch (InterruptedException ex) {
                 Logger.getLogger(TcpSocket.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {

@@ -159,6 +159,7 @@ public class WebUI extends JFrame {
                     String[] sipAddrs = inputField.getText().split("\\s+");
                     if(sipAddrs.length==2){
                         //sipUA.call(sipAddrs[0],Integer.parseInt(sipAddrs[1]));
+                        webMiddleMan.send("CALL");
                     }else{
                         appendMsg("Input format error");
                     }

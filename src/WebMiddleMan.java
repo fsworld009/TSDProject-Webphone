@@ -26,4 +26,8 @@ public class WebMiddleMan implements TcpSocketEventListener {
         
     }
     
+    public void send(String msg){
+        socket.send(msg);
+    }
+    
 }
