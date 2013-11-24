@@ -61,6 +61,7 @@ public class TcpSocket {
                 Logger.getLogger(TcpSocket.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(socket.isConnected()){
+                eventListener.onConnect();
                 startSocketThread();
             }
     }

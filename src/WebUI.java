@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -36,7 +38,7 @@ public class WebUI extends JFrame {
     private WebMiddleMan webMiddleMan;
     
     public WebUI(){
-        super("Simple Sip UA");
+        super("Webphone");
         //this.mainWinRef = mainWinRef;
         //init();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,9 +46,16 @@ public class WebUI extends JFrame {
         this.setResizable(false);
         this.addWindowListener(new closeEventWindowListener());
         initComponents();
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(WebUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+{
+            webMiddleMan = new WebMiddleMan(this);
+            webMiddleMan.start();
+        }
 
-        webMiddleMan = new WebMiddleMan();
-        webMiddleMan.start();
     }
     
     /*public void called(final Call call,final NameAddress callee,final NameAddress caller,final java.lang.String sdp, final Message invite){
@@ -120,29 +129,29 @@ public class WebUI extends JFrame {
     }
     
     public void appendLog(final String newLog){     
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        //SwingUtilities.invokeLater(new Runnable() {
+           // @Override
+            //public void run() {
                 try {
                     logPane.getDocument().insertString(logPane.getDocument().getLength(), newLog, null);
                 } catch (BadLocationException ex) {
                     System.err.println("BadLocationException");
                 }
-            }
-        });
+          //  }
+        //});
     }
     
     public void appendMsg(final String newLog){     
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        //SwingUtilities.invokeLater(new Runnable() {
+            //@Override
+            //public void run() {
                 try {
                     msgPane.getDocument().insertString(msgPane.getDocument().getLength(), newLog, null);
                 } catch (BadLocationException ex) {
                     System.err.println("BadLocationException");
                 }
-            }
-        });
+           // }
+       // });
     }
     
     private class closeEventWindowListener extends WindowAdapter{
@@ -159,12 +168,13 @@ public class WebUI extends JFrame {
                     String[] sipAddrs = inputField.getText().split("\\s+");
                     if(sipAddrs.length==2){
                         //sipUA.call(sipAddrs[0],Integer.parseInt(sipAddrs[1]));
-                        webMiddleMan.send("CALL");
+                        webMiddleMan.call(sipAddrs[0],Integer.parseInt(sipAddrs[1]));
                     }else{
                         appendMsg("Input format error");
                     }
                 }else if(e.getSource() == WebUI.this.cancelButton){
                     //sipUA.closeCall();
+                    webMiddleMan.closeCall();
                 }
             }
     }
