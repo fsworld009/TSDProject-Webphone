@@ -31,7 +31,11 @@ public class WebMiddleMan implements TcpSocketEventListener {
 
     @Override
     public void onReceive(String msg) {
-        
+        if(msg.equals("ACCEPT")){
+            uiRef.appendMsg("The call is accepted\n");
+        }else if(msg.equals("REFUSED")){
+            uiRef.appendMsg("The call is refused\n");
+        }
     }
     
     public void call(String ip,int port){
