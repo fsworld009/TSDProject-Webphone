@@ -36,7 +36,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     
     public void call(String ip,int port){
         socket.send(String.format("CALL %s %d",ip,port));
-        uiRef.appendMsg("Calling "+String.format("%s:%d",ip,port));
+        uiRef.appendMsg("Calling "+String.format("%s:%d",ip,port)+"\n");
     }
     
     public void send(String msg){
@@ -44,7 +44,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     }
     
     public void closeCall(){
-        
+        socket.send("CANCEL");
     }
     
 }
