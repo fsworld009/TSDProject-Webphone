@@ -9,7 +9,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     WebUI uiRef;
     VoiceChat voiceChat;
     
-    int status;
+    int status=0;   //0=idle 1=active
     
     public WebMiddleMan(WebUI ref){
         uiRef = ref;
@@ -38,21 +38,35 @@ public class WebMiddleMan implements TcpSocketEventListener {
             initVoiceChat();
         }else if(msg.equals("REFUSED")){
             uiRef.appendMsg("The call is refused\n");
+        }else if(msg.equals("BYE")){
+            uiRef.appendMsg("The call is ended\n");
+            closeVoiceChat();
+        }else if(msg.contains("INVITE FROM")){
+            String[] split = msg.split("\\s+");
+            //uiRef.called(split[2]);
         }
     }
     
     private void initVoiceChat(){
+        
         System.out.println("me");
-            if(voiceChat==null){
-                voiceChat = new VoiceChat();
-            }
-            voiceChat.init("192.168.2.5", rtpPort); //need improve
-            voiceChat.start();
+        if(voiceChat==null){
+            voiceChat = new VoiceChat();
+        }
+        voiceChat.init("192.168.2.5", rtpPort); //need improve
+        voiceChat.start();
+        status=1;
     }
     
     public void call(String ip,int port){
         socket.send(String.format("CALL %s %d",ip,port));
         uiRef.appendMsg("Calling "+String.format("%s:%d",ip,port)+"\n");
+    }
+    
+    private void closeVoiceChat(){
+        voiceChat.close();
+        System.out.println("Call close");
+        status=0;
     }
     
     public void send(String msg){
@@ -61,6 +75,9 @@ public class WebMiddleMan implements TcpSocketEventListener {
     
     public void closeCall(){
         socket.send("CANCEL");
+        if(status==1){
+            closeVoiceChat();
+        }
     }
     
 }

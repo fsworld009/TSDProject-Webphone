@@ -173,8 +173,9 @@ public class TcpSocket {
             try {
                 while(threadRunning){
                     String line = reader.readLine();
-                    System.out.println("TcpSocket:Get "+line);
+                    
                     if(line != null){
+                        System.out.println("TcpSocket:Get "+line);
                         eventListener.onReceive(line);
                     }
                     Thread.sleep(5);
