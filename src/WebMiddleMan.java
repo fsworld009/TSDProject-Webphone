@@ -33,6 +33,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
 
     @Override
     public void onReceive(String msg) {
+        uiRef.appendLog("<<< "+msg+"\n");
         if(msg.equals("ACCEPTED")){
             uiRef.appendMsg("The call is accepted\n");
             initVoiceChat();
@@ -59,7 +60,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     }
     
     public void call(String ip,int port){
-        socket.send(String.format("CALL %s %d",ip,port));
+        sendRaw(String.format("CALL %s %d",ip,port));
         uiRef.appendMsg("Calling "+String.format("%s:%d",ip,port)+"\n");
     }
     
@@ -70,17 +71,22 @@ public class WebMiddleMan implements TcpSocketEventListener {
     }
     
     public void logout(){
-        socket.send("LOGOUT");
+        
+        sendRaw("LOGOUT");
     }
     
     public void sendRaw(String msg){
+        uiRef.appendLog(">>> "+msg+"\n");
         socket.send(msg);
     }
     
     public void closeCall(){
-        socket.send("CANCEL");
+        
         if(status==1){
+            sendRaw("CLOSE");
             closeVoiceChat();
+        }else{
+            sendRaw("CANCEL");
         }
     }
     
