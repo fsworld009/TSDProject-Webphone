@@ -69,7 +69,11 @@ public class WebMiddleMan implements TcpSocketEventListener {
         status=0;
     }
     
-    public void send(String msg){
+    public void logout(){
+        socket.send("LOGOUT");
+    }
+    
+    public void sendRaw(String msg){
         socket.send(msg);
     }
     

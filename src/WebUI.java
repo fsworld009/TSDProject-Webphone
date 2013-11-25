@@ -157,7 +157,7 @@ public class WebUI extends JFrame {
     private class closeEventWindowListener extends WindowAdapter{
         @Override
         public void windowClosing(WindowEvent e) {
-            
+            webMiddleMan.logout();
         }
     }
     
