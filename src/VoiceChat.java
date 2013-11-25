@@ -77,7 +77,7 @@ public class VoiceChat {
                 }*/
             
             bufferSize = (int)audioFormat.getSampleRate() * audioFormat.getFrameSize();
-            System.out.printf("fsdfs %d %f %d", bufferSize,audioFormat.getSampleRate(),audioFormat.getFrameSize());
+            System.out.printf("%d %f %d", bufferSize,audioFormat.getSampleRate(),audioFormat.getFrameSize());
             //bufferSize = 4000;
             sendBuffer = new byte[bufferSize];
             receiveBuffer = new byte[bufferSize];
@@ -146,9 +146,9 @@ public class VoiceChat {
                     }
                     Thread.sleep(5);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             //recordLine.drain();
@@ -179,9 +179,9 @@ public class VoiceChat {
 
                     Thread.sleep(5);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(VoiceChat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             //playLine.drain();
