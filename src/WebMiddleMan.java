@@ -18,7 +18,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     public void start(){
         socket = new TcpSocket();
         socket.registerEventListener(this);
-        socket.connect("localhost", tcpPort); //need improve
+        socket.connect("192.168.2.5", tcpPort); //need improve
     }
 
     @Override
@@ -46,7 +46,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
             if(voiceChat==null){
                 voiceChat = new VoiceChat();
             }
-            voiceChat.init("192.168.2.2", rtpPort); //need improve
+            voiceChat.init("192.168.2.5", rtpPort); //need improve
             voiceChat.start();
     }
     
