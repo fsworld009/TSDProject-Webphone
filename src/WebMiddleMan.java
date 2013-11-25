@@ -5,7 +5,9 @@
 public class WebMiddleMan implements TcpSocketEventListener {
     private TcpSocket socket;
     private int tcpPort=10002;
+    private int rtpPort=10003;
     WebUI uiRef;
+    VoiceChat voiceChat;
     
     int status;
     
@@ -16,7 +18,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     public void start(){
         socket = new TcpSocket();
         socket.registerEventListener(this);
-        socket.connect("localhost", 10002); //need improve
+        socket.connect("localhost", tcpPort); //need improve
     }
 
     @Override
@@ -31,11 +33,21 @@ public class WebMiddleMan implements TcpSocketEventListener {
 
     @Override
     public void onReceive(String msg) {
-        if(msg.equals("ACCEPT")){
+        if(msg.equals("ACCEPTED")){
             uiRef.appendMsg("The call is accepted\n");
+            initVoiceChat();
         }else if(msg.equals("REFUSED")){
             uiRef.appendMsg("The call is refused\n");
         }
+    }
+    
+    private void initVoiceChat(){
+        System.out.println("me");
+            if(voiceChat==null){
+                voiceChat = new VoiceChat();
+            }
+            voiceChat.init("192.168.2.2", rtpPort); //need improve
+            voiceChat.start();
     }
     
     public void call(String ip,int port){
