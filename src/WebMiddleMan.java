@@ -6,6 +6,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     private TcpSocket socket;
     private int tcpPort=10002;
     private int rtpPort=10003;
+    private String remoteIp;
     WebUI uiRef;
     VoiceChat voiceChat;
     
@@ -15,10 +16,11 @@ public class WebMiddleMan implements TcpSocketEventListener {
         uiRef = ref;
     }
     
-    public void start(){
+    public void start(String rmip){
+        remoteIp = rmip;
         socket = new TcpSocket();
         socket.registerEventListener(this);
-        socket.connect("192.168.2.5", tcpPort); //need improve
+        socket.connect(remoteIp, tcpPort); //need improve
     }
 
     @Override
@@ -68,7 +70,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
         if(voiceChat==null){
             voiceChat = new VoiceChat();
         }
-        voiceChat.init("192.168.2.5", rtpPort); //need improve
+        voiceChat.init(remoteIp, rtpPort); //need improve
         voiceChat.start();
         status=1;
     }

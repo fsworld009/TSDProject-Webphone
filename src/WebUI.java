@@ -3,7 +3,6 @@
  */
 
 
-import java.applet.Applet;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,8 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,7 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 
-public class WebUI extends Applet {
+public class WebUI extends JApplet {
     
     private JTextPane logPane;
     private JTextPane msgPane;
@@ -34,6 +33,7 @@ public class WebUI extends Applet {
     private GUIActionListener listener;
     private int state;  //0=caller, 1=callee
     private WebMiddleMan webMiddleMan;
+    private String remoteIp;
     
     public WebUI(){
         //super("Webphone");
@@ -43,8 +43,8 @@ public class WebUI extends Applet {
         //this.setSize(360,480);
         //this.setResizable(false);
         
-        
-        //this.addWindowListener(new closeEventWindowListener());
+        //this.add
+       // this.addWindowListener(new closeEventWindowListener());
         
         initComponents();
         try {
@@ -53,10 +53,15 @@ public class WebUI extends Applet {
             Logger.getLogger(WebUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 {
-            webMiddleMan = new WebMiddleMan(this);
-            webMiddleMan.start();
+
         }
 
+    }
+    
+    public void init(){
+        remoteIp = getParameter("remoteIp");
+        webMiddleMan = new WebMiddleMan(this);
+        webMiddleMan.start(remoteIp);
     }
     
     public void called(final String callerAddr){
@@ -157,12 +162,17 @@ public class WebUI extends Applet {
        // });
     }
     
-    /*private class closeEventWindowListener extends WindowAdapter{
-        @Override
-        public void windowClosing(WindowEvent e) {
-            webMiddleMan.logout();
-        }
-    }*/
+    //private class closeEventWindowListener extends WindowAdapter{
+    //    @Override
+    //    public void windowClosing(WindowEvent e) {
+    //        webMiddleMan.logout();
+    //    }
+    //}
+    
+    @Override
+    public void stop(){
+        webMiddleMan.logout();
+    }
     
     private class GUIActionListener implements ActionListener{
             @Override
