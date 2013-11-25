@@ -63,9 +63,11 @@ public class WebUI extends JFrame {
         //dialog.set
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if(JOptionPane.showConfirmDialog(null,"You got a call from"+callerAddr,"New call",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+                if(JOptionPane.showConfirmDialog(null,"You got a call from "+callerAddr,"New call",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+                    appendMsg("Accept the call from "+callerAddr+"\n");
                     webMiddleMan.acceptCall();
                 }else{
+                    appendMsg("Refuse the call from "+callerAddr+"\n");
                     webMiddleMan.refuseCall();
                 }
             }

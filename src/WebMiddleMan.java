@@ -36,12 +36,18 @@ public class WebMiddleMan implements TcpSocketEventListener {
         uiRef.appendLog("<<< "+msg+"\n");
         if(msg.equals("ACCEPTED")){
             uiRef.appendMsg("The call is accepted\n");
+            //start voice chat when you're caller
             initVoiceChat();
+            uiRef.appendMsg("Start voice chat...\n");
         }else if(msg.equals("REFUSED")){
             uiRef.appendMsg("The call is refused\n");
         }else if(msg.equals("BYE")){
             uiRef.appendMsg("The call is ended\n");
             closeVoiceChat();
+        }else if(msg.equals("CONFIRMED")){
+            //start voice chat when you're callee
+            uiRef.appendMsg("Start voice chat...\n");
+            initVoiceChat();
         }else if(msg.contains("INVITE FROM")){
             String[] split = msg.split("\\s+");
             uiRef.called(split[2]);
