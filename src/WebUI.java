@@ -3,7 +3,7 @@
  */
 
 
-import java.awt.Dimension;
+import java.applet.Applet;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,11 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,7 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 
-public class WebUI extends JFrame {
+public class WebUI extends Applet {
     
     private JTextPane logPane;
     private JTextPane msgPane;
@@ -38,13 +36,16 @@ public class WebUI extends JFrame {
     private WebMiddleMan webMiddleMan;
     
     public WebUI(){
-        super("Webphone");
+        //super("Webphone");
         //this.mainWinRef = mainWinRef;
         //init();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(360,480);
-        this.setResizable(false);
-        this.addWindowListener(new closeEventWindowListener());
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.setSize(360,480);
+        //this.setResizable(false);
+        
+        
+        //this.addWindowListener(new closeEventWindowListener());
+        
         initComponents();
         try {
             Thread.sleep(20);
@@ -156,12 +157,12 @@ public class WebUI extends JFrame {
        // });
     }
     
-    private class closeEventWindowListener extends WindowAdapter{
+    /*private class closeEventWindowListener extends WindowAdapter{
         @Override
         public void windowClosing(WindowEvent e) {
             webMiddleMan.logout();
         }
-    }
+    }*/
     
     private class GUIActionListener implements ActionListener{
             @Override

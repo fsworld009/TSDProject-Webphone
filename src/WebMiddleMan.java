@@ -81,6 +81,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     private void closeVoiceChat(){
         voiceChat.close();
         System.out.println("Call close");
+        uiRef.appendMsg("Call closed\n");
         status=0;
     }
     
