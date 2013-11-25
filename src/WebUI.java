@@ -58,21 +58,21 @@ public class WebUI extends JFrame {
 
     }
     
-    /*public void called(final Call call,final NameAddress callee,final NameAddress caller,final java.lang.String sdp, final Message invite){
+    public void called(final String callerAddr){
         //JDialog dialog = new JDialog(this,"You got a call from"+addr);
         //dialog.set
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if(JOptionPane.showConfirmDialog(null,"You got a call from"+invite.getRemoteAddress(),"New call",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
-                    sipUA.acceptCall(call,callee,caller,sdp,invite);
+                if(JOptionPane.showConfirmDialog(null,"You got a call from"+callerAddr,"New call",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+                    webMiddleMan.acceptCall();
                 }else{
-                    sipUA.refuseCall(call,callee,caller,sdp,invite);
+                    webMiddleMan.refuseCall();
                 }
             }
         });
 
         
-    }*/
+    }
     
     private void initComponents(){
         inputField = new JTextField(15);

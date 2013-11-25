@@ -44,8 +44,16 @@ public class WebMiddleMan implements TcpSocketEventListener {
             closeVoiceChat();
         }else if(msg.contains("INVITE FROM")){
             String[] split = msg.split("\\s+");
-            //uiRef.called(split[2]);
+            uiRef.called(split[2]);
         }
+    }
+    
+    public void acceptCall(){
+        sendRaw("ACCEPT");
+    }
+    
+    public void refuseCall(){
+        sendRaw("REFUSE");
     }
     
     private void initVoiceChat(){
