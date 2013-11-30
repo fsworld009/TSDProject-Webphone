@@ -38,16 +38,17 @@ public class WebMiddleMan implements TcpSocketEventListener {
         uiRef.appendLog("<<< "+msg+"\n");
         if(msg.equals("ACCEPTED")){
             uiRef.stopRing();
-            uiRef.appendMsg("The call is accepted\n");
+            uiRef.appendMsg("Your call is accepted\n");
             //start voice chat when you're caller
             initVoiceChat();
             uiRef.appendMsg("Start voice chat...\n");
         }else if(msg.equals("REFUSED")){
             //RingPlayer.ins().stopPlay();
             uiRef.stopRing();
-            uiRef.appendMsg("The call is refused\n");
+            uiRef.appendMsg("Your call is refused\n");
+            uiRef.enableButton(true, false, false, false);
         }else if(msg.equals("BYE")){
-            uiRef.appendMsg("The call is ended\n");
+            uiRef.appendMsg("Call closed\n");
             closeVoiceChat();
         }else if(msg.equals("CONFIRMED")){
             //start voice chat when you're callee
@@ -56,26 +57,33 @@ public class WebMiddleMan implements TcpSocketEventListener {
         }else if(msg.contains("INVITE FROM")){
             String[] split = msg.split("\\s+");
             uiRef.playRing();
-            uiRef.called(split[2]);
+            uiRef.appendMsg("You got a call from "+split[2]+"\n");
+            uiRef.enableButton(false, false, true, true);
         }else if(msg.equals("CANCELED")){
             uiRef.stopRing();
+            uiRef.appendMsg("The call is canceled\n");
+            uiRef.enableButton(true, false, false, false);
         }else if(msg.equals("RING")){
             uiRef.playRing();
         }
     }
     
     public void acceptCall(){
-        uiRef.stopRing();            
+        uiRef.stopRing();
+        uiRef.enableButton(false, true, false, false);
         sendRaw("ACCEPT");
+        uiRef.appendMsg("Accept the call\n");
     }
     
     public void refuseCall(){
         uiRef.stopRing();
+        uiRef.enableButton(true, false, false, false);
         sendRaw("REFUSE");
+        uiRef.appendMsg("Refuse the call\n");
     }
     
     private void initVoiceChat(){
-        
+        uiRef.enableButton(false, true, false, false);
         System.out.println("me");
         if(voiceChat==null){
             voiceChat = new VoiceChat();
@@ -88,9 +96,11 @@ public class WebMiddleMan implements TcpSocketEventListener {
     public void call(String ip,int port){
         sendRaw(String.format("CALL %s %d",ip,port));
         uiRef.appendMsg("Calling "+String.format("%s:%d",ip,port)+"\n");
+        uiRef.enableButton(false, true, false, false);
     }
     
     private void closeVoiceChat(){
+        uiRef.enableButton(true, false, false, false);
         voiceChat.close();
         System.out.println("Call close");
         uiRef.appendMsg("Call closed\n");
@@ -115,6 +125,8 @@ public class WebMiddleMan implements TcpSocketEventListener {
         }else{
             sendRaw("CANCEL");
             uiRef.stopRing();
+            uiRef.appendMsg("Your call is canceled\n");
+            uiRef.enableButton(true, false, false, false);
         }
     }
     

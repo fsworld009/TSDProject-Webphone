@@ -37,6 +37,8 @@ public class WebUI extends JApplet {
     private String remoteIp;
     private String httpPort;
     private AudioClip ringTone;
+    private JButton acceptButton;
+    private JButton refuseButton;
     
     public WebUI(){
         //super("Webphone");
@@ -61,6 +63,17 @@ public class WebUI extends JApplet {
 
     }
     
+    public void enableButton(final boolean ok, final boolean cancel, final boolean accept, final boolean refuse){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                okButton.setEnabled(ok);
+                cancelButton.setEnabled(cancel);
+                acceptButton.setEnabled(accept);
+                refuseButton.setEnabled(refuse);
+            }
+        });
+    }
+    
     public void playRing(){
         ringTone.loop();
     }
@@ -79,23 +92,28 @@ public class WebUI extends JApplet {
         ringTone = getAudioClip(getCodeBase(), "ring.au");
     }
     
-    public void called(final String callerAddr){
+    /*public void called(final String callerAddr){
         //JDialog dialog = new JDialog(this,"You got a call from"+addr);
         //dialog.set
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if(JOptionPane.showConfirmDialog(null,"You got a call from "+callerAddr,"New call",JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION){
+                int a = JOptionPane.showConfirmDialog(null,"You got a call from "+callerAddr,"New call",JOptionPane.YES_NO_OPTION);
+                
+                if(a == JOptionPane.YES_OPTION){
                     appendMsg("Accept the call from "+callerAddr+"\n");
                     webMiddleMan.acceptCall();
-                }else{
+                }else if(a== JOptionPane.NO_OPTION){
                     appendMsg("Refuse the call from "+callerAddr+"\n");
                     webMiddleMan.refuseCall();
+                }else{
+                    //JOptionPane.CLOSED_OPTION
+                    return;
                 }
             }
         });
 
         
-    }
+    }*/
     
     private void initComponents(){
         inputField = new JTextField(15);
@@ -109,6 +127,11 @@ public class WebUI extends JApplet {
         JScrollPane logScrollPane = new JScrollPane(logPane);
         okButton = new JButton("Call");
         cancelButton = new JButton("Close");
+        cancelButton.setEnabled(false);
+        acceptButton = new JButton("Accept");
+        acceptButton.setEnabled(false);
+        refuseButton = new JButton("Refuse");
+        refuseButton.setEnabled(false);
         listener = new GUIActionListener();
         
         setLayout(new GridBagLayout());
@@ -129,9 +152,14 @@ public class WebUI extends JApplet {
         inputPanel.add(inputField);
         inputPanel.add(okButton);
         inputPanel.add(cancelButton);
+        inputPanel.add(acceptButton);
+        inputPanel.add(refuseButton);
+        
         
         okButton.addActionListener(listener);
         cancelButton.addActionListener(listener);
+        acceptButton.addActionListener(listener);
+        refuseButton.addActionListener(listener);
         
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -203,6 +231,10 @@ public class WebUI extends JApplet {
                 }else if(e.getSource() == WebUI.this.cancelButton){
                     //sipUA.closeCall();
                     webMiddleMan.closeCall();
+                }else if(e.getSource() == WebUI.this.acceptButton){
+                    webMiddleMan.acceptCall();
+                }else if(e.getSource() == WebUI.this.refuseButton){
+                    webMiddleMan.refuseCall();
                 }
             }
     }
