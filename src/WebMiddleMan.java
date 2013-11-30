@@ -35,7 +35,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
 
     @Override
     public void onReceive(String msg) {
-        uiRef.appendLog("<<< "+msg+"\n");
+        uiRef.appendLog("[RECV]<<< "+msg+"\n");
         if(msg.equals("ACCEPTED")){
             uiRef.stopRing();
             uiRef.appendMsg("Your call is accepted\n");
@@ -113,7 +113,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     }
     
     public void sendRaw(String msg){
-        uiRef.appendLog(">>> "+msg+"\n");
+        uiRef.appendLog("[SEND]>>> "+msg+"\n");
         socket.send(msg);
     }
     
