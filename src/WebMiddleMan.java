@@ -37,11 +37,14 @@ public class WebMiddleMan implements TcpSocketEventListener {
     public void onReceive(String msg) {
         uiRef.appendLog("<<< "+msg+"\n");
         if(msg.equals("ACCEPTED")){
+            uiRef.stopRing();
             uiRef.appendMsg("The call is accepted\n");
             //start voice chat when you're caller
             initVoiceChat();
             uiRef.appendMsg("Start voice chat...\n");
         }else if(msg.equals("REFUSED")){
+            //RingPlayer.ins().stopPlay();
+            uiRef.stopRing();
             uiRef.appendMsg("The call is refused\n");
         }else if(msg.equals("BYE")){
             uiRef.appendMsg("The call is ended\n");
@@ -52,15 +55,22 @@ public class WebMiddleMan implements TcpSocketEventListener {
             initVoiceChat();
         }else if(msg.contains("INVITE FROM")){
             String[] split = msg.split("\\s+");
+            uiRef.playRing();
             uiRef.called(split[2]);
+        }else if(msg.equals("CANCELED")){
+            uiRef.stopRing();
+        }else if(msg.equals("RING")){
+            uiRef.playRing();
         }
     }
     
     public void acceptCall(){
+        uiRef.stopRing();            
         sendRaw("ACCEPT");
     }
     
     public void refuseCall(){
+        uiRef.stopRing();
         sendRaw("REFUSE");
     }
     
@@ -104,6 +114,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
             closeVoiceChat();
         }else{
             sendRaw("CANCEL");
+            uiRef.stopRing();
         }
     }
     

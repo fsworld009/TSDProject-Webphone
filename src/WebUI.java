@@ -3,6 +3,7 @@
  */
 
 
+import java.applet.AudioClip;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -34,6 +35,8 @@ public class WebUI extends JApplet {
     private int state;  //0=caller, 1=callee
     private WebMiddleMan webMiddleMan;
     private String remoteIp;
+    private String httpPort;
+    private AudioClip ringTone;
     
     public WebUI(){
         //super("Webphone");
@@ -58,10 +61,22 @@ public class WebUI extends JApplet {
 
     }
     
+    public void playRing(){
+        ringTone.loop();
+    }
+    
+    public void stopRing(){
+        ringTone.stop();
+    }
+    
     public void init(){
         remoteIp = getParameter("remoteIp");
+        httpPort = getParameter("httpPort");
+        //RingPlayer.ins().setRemoteIp(remoteIp+":"+httpPort);
         webMiddleMan = new WebMiddleMan(this);
         webMiddleMan.start(remoteIp);
+        
+        ringTone = getAudioClip(getCodeBase(), "ring.au");
     }
     
     public void called(final String callerAddr){
