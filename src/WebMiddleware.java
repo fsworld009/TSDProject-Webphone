@@ -2,7 +2,7 @@
 
 
 
-public class WebMiddleMan implements TcpSocketEventListener {
+public class WebMiddleware implements TcpSocketEventListener {
     private TcpSocket socket;
     private int tcpPort=10002;
     private int rtpPort=10003;
@@ -12,7 +12,7 @@ public class WebMiddleMan implements TcpSocketEventListener {
     
     int status=0;   //0=idle 1=active
     
-    public WebMiddleMan(WebUI ref){
+    public WebMiddleware(WebUI ref){
         uiRef = ref;
     }
     

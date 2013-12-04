@@ -5,6 +5,7 @@
 
 import java.applet.AudioClip;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -33,7 +34,7 @@ public class WebUI extends JApplet {
     private JButton cancelButton;
     private GUIActionListener listener;
     private int state;  //0=caller, 1=callee
-    private WebMiddleMan webMiddleMan;
+    private WebMiddleware webMiddleMan;
     private String remoteIp;
     private String httpPort;
     private AudioClip ringTone;
@@ -86,7 +87,7 @@ public class WebUI extends JApplet {
         remoteIp = getParameter("remoteIp");
         httpPort = getParameter("httpPort");
         //RingPlayer.ins().setRemoteIp(remoteIp+":"+httpPort);
-        webMiddleMan = new WebMiddleMan(this);
+        webMiddleMan = new WebMiddleware(this);
         webMiddleMan.start(remoteIp);
         
         ringTone = getAudioClip(getCodeBase(), "ring.au");
@@ -176,6 +177,10 @@ public class WebUI extends JApplet {
         gbc.ipady = 200;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         this.add(logScrollPane,gbc);
+        
+        Font font = new Font("Arial",Font.PLAIN,20);
+        logPane.setFont(font);
+        msgPane.setFont(font);
         
     }
     
